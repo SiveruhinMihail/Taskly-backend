@@ -5,7 +5,7 @@ services:
     image: mongo:6
     container_name: mongodb
     ports:
-      - '27017:27017' 
+      - '27017:27017'
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
@@ -22,9 +22,7 @@ services:
     container_name: app
     ports:
       - '3000:3000'
-    environment:
-      MONGODB_URI: 'mongodb://root:example@mongodb:27017/taskly?authSource=admin'
-      NODE_ENV: development
+    env_file: .env
     depends_on:
       mongodb:
         condition: service_healthy
