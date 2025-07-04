@@ -1,4 +1,4 @@
-const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerJsdoc = require('swagger-jsdoc')
 
 const options = {
   definition: {
@@ -10,7 +10,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000', // Укажите ваш URL
+        url: 'http://localhost:3000',
         description: 'Development server',
       },
     ],
@@ -25,9 +25,9 @@ const options = {
     },
     security: [{ bearerAuth: [] }],
   },
-  apis: ['./routes/*.js', './controllers/*.js'], // Пути к файлам с JSDoc-комментариями
-};
+  apis: ['./routes/*.js', './controllers/*.js'], 
+}
 
-const specs = swaggerJsdoc(options);
+const specs = swaggerJsdoc(options)
 
-module.exports = specs;
+module.exports = specs
