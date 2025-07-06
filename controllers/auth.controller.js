@@ -1,34 +1,59 @@
-const AuthService = require("../services/auth.service");
+const AuthService = require('../services/auth.service')
 
-exports.login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const { accessToken, refreshToken, userId } = await AuthService.login(
-      email,
-      password
-    );
-    res.json({ accessToken, refreshToken, userId });
-  } catch (err) {
-    res.status(401).json({ error: err.message });
-  }
-};
+const authController = {
+  // Регистрация
+  register: async (req, res) => {
+    try {
+      const { name, email, password } = req.body
+      const result = await AuthService.register(name, email, password)
 
-exports.refresh = async (req, res) => {
-  try {
-    const { refreshToken } = req.body;
-    const { accessToken, refreshToken: newRefreshToken } =
-      await AuthService.refreshTokens(refreshToken);
-    res.json({ accessToken, refreshToken: newRefreshToken });
-  } catch (err) {
-    res.status(401).json({ error: err.message });
-  }
-};
+      res.status(201).json({
+        success: true,
+        data: result,
+      })
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      })
+    }
+  },
 
-exports.logout = async (req, res) => {
-  try {
-    await AuthService.logout(req.userId);
-    res.json({ message: "Logged out" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+  // Вход
+  login: async (req, res) => {
+    try {
+      const { email, password } = req.body
+      const result = await AuthService.login(email, password)
+
+      res.json({
+        success: true,
+        data: result,
+      })
+    } catch (error) {
+      res.status(401).json({
+        success: false,
+        message: error.message,
+      })
+    }
+  },
+
+  // Обновление токенов
+  refresh: async (req, res) => {
+    try {
+      const { refreshToken } = req.body
+      const result = await AuthService.refreshTokens(refreshToken)
+
+      res.json({
+        success: true,
+        data: result,
+      })
+    } catch (error) {
+      res.status(401).json({
+        success: false,
+        message: error.message,
+      })
+    }
+  },
+}
+
+module.exports = authController

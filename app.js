@@ -1,7 +1,8 @@
+require('dotenv').config()
 const express = require('express')
 
 const swaggerUi = require('swagger-ui-express')
-const specs = require('./config/swagger')
+const swaggerSpec = require('./config/swagger')
 
 const connectDB = require('./config/db')
 const authRoutes = require('./routes/auth.routes')
@@ -12,16 +13,20 @@ const app = express()
 
 app.use(express.json())
 
+connectDB()
+
 app.use('/api/auth', authRoutes)
 
 app.get('/', (req, res) => {
   res.send('Привет, мир! �')
 })
 
-connectDB()
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs))
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`)
-})
+app.listen(PORT, () =>
+  console.log(`
+  Server running on port ${PORT}
+  Swagger UI: http://localhost:${PORT}/docs
+`),
+)
