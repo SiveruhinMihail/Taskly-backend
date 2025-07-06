@@ -6,7 +6,7 @@ const specs = require('./config/swagger')
 const connectDB = require('./config/db')
 const authRoutes = require('./routes/auth.routes')
 
-const PORT = 3000
+const PORT = process.env.PORT
 
 const app = express()
 

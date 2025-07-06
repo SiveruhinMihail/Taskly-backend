@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const { login, refresh, logout } = require('../controllers/auth.controller') // Исправлен путь
-const authMiddleware = require('../middlewares/auth') // Исправлен путь
+const { login, refresh, logout } = require('../controllers/auth.controller')
+const authMiddleware = require('../middlewares/auth')
 
 /**
  * @swagger
