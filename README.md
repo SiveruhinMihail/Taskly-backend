@@ -1,5 +1,10 @@
 # Taskly Backend - Руководство по установке с Docker
 
+## Сервер
+```
+http://localhost:3000/docs
+```
+
 ## Требования
 - Установленный Docker
 - Установленный Docker Compose
