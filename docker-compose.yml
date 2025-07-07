@@ -29,12 +29,8 @@ services:
         condition: service_healthy
     ports:
       - '${PORT}:${PORT}'
-    environment:
-      - MONGODB_URI=${MONGODB_URI}
-      - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
-      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
-      - NODE_ENV=${NODE_ENV}
-      - PORT=${PORT}
+    env_file:
+      - .env
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
