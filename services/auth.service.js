@@ -100,6 +100,19 @@ class AuthService {
       throw new Error(`Token refresh failed: ${error.message}`)
     }
   }
+
+  static async logout(userId) {
+    try {
+      await User.findByIdAndUpdate(userId, { refreshToken: null })
+      return {
+        accessToken,
+        refreshToken: newRefreshToken,
+        userId: user._id,
+      }
+    } catch (error) {
+      throw new Error(`Token refresh failed: ${error.message}`)
+    }
+  }
 }
 
 module.exports = AuthService
