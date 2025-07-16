@@ -18,5 +18,5 @@ test('Register user', async () => {
     },
   )
 
-  expect(response.status).toBe(201)
+  expect(response.status).toBe(200)
 })

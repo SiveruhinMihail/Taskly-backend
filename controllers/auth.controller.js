@@ -6,7 +6,7 @@ exports.register = async (req, res) => {
     const { name, email, password, use } = req.body
     const result = await AuthService.register(name, email, password, use)
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       data: result,
     })
@@ -34,7 +34,7 @@ exports.login = async (req, res) => {
       message: error.message,
     })
   }
-} 
+}
 
 // Обновление токенов
 exports.refresh = async (req, res) => {
@@ -56,9 +56,9 @@ exports.refresh = async (req, res) => {
 
 exports.logout = async (req, res) => {
   try {
-    await AuthService.logout(req.userId);
-    res.json({ message: "Logged out" });
+    await AuthService.logout(req.userId)
+    res.json({ message: 'Logged out' })
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message })
   }
-};
+}
