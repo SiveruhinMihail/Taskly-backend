@@ -3,6 +3,7 @@
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "jest": "^30.0.4",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.0"
   },
@@ -17,6 +18,7 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "lint:front": "eslint ./src --ext .ts,.vue --fix",
-    "lint": "npm run lint:front && npm run lint:back"
+    "lint": "npm run lint:front && npm run lint:back",
+    "test": "jest"
   }
 }
