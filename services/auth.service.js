@@ -1,53 +1,115 @@
-const User = require("../models/User");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { access, refresh } = require("../config/jwt");
+const jwt = require('jsonwebtoken')
+const User = require('../models/User')
+const config = require('../config/jwt')
 
 class AuthService {
   // Генерация токенов
   static generateTokens(userId) {
-    const accessToken = jwt.sign({ id: userId }, access.secret, {
-      expiresIn: access.expiresIn,
-    });
-    const refreshToken = jwt.sign({ id: userId }, refresh.secret, {
-      expiresIn: refresh.expiresIn,
-    });
-    return { accessToken, refreshToken };
+    const accessToken = jwt.sign({ userId }, config.accessTokenSecret, {
+      expiresIn: config.accessTokenExpiration,
+    })
+
+    const refreshToken = jwt.sign({ userId }, config.refreshTokenSecret, {
+      expiresIn: config.refreshTokenExpiration,
+    })
+
+    return { accessToken, refreshToken }
   }
 
-  // Логин
+  // Регистрация пользователя
+  static async register(name, email, password, use) {
+    try {
+      const existingUser = await User.findOne({ email })
+      if (existingUser) {
+        throw new Error('User with this email already exists')
+      }
+
+      const user = new User({ name, email, password, use })
+      await user.save()
+
+      const { accessToken, refreshToken } = this.generateTokens(user._id)
+
+      user.refreshToken = refreshToken
+      await user.save()
+
+      return {
+        accessToken,
+        refreshToken,
+        userId: user._id,
+        name: user.name,
+        email: user.email,
+      }
+    } catch (error) {
+      throw new Error(`Registration failed: ${error.message}`)
+    }
+  }
+
+  // Вход пользователя
   static async login(email, password) {
-    const user = await User.findOne({ email });
-    if (!user) throw new Error("User not found");
+    try {
+      const user = await User.findOne({ email })
+      if (!user) {
+        throw new Error('User not found')
+      }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) throw new Error("Invalid password");
+      const isPasswordValid = await user.comparePassword(password)
+      if (!isPasswordValid) {
+        throw new Error('Invalid password')
+      }
 
-    const { accessToken, refreshToken } = this.generateTokens(user._id);
-    user.refreshToken = refreshToken;
-    await user.save();
+      const { accessToken, refreshToken } = this.generateTokens(user._id)
 
-    return { accessToken, refreshToken, userId: user._id };
+      user.refreshToken = refreshToken
+      user.lastLogin = new Date()
+      await user.save()
+
+      return {
+        accessToken,
+        refreshToken,
+        userId: user._id,
+        name: user.name,
+        email: user.email,
+      }
+    } catch (error) {
+      throw new Error(`Login failed: ${error.message}`)
+    }
   }
 
   // Обновление токенов
   static async refreshTokens(refreshToken) {
-    const decoded = jwt.verify(refreshToken, refresh.secret);
-    const user = await User.findById(decoded.id);
-    if (!user || user.refreshToken !== refreshToken)
-      throw new Error("Invalid refresh token");
+    try {
+      const decoded = jwt.verify(refreshToken, config.refreshTokenSecret)
 
-    const { accessToken, newRefreshToken } = this.generateTokens(user._id);
-    user.refreshToken = newRefreshToken;
-    await user.save();
+      const user = await User.findById(decoded.userId)
+      if (!user || user.refreshToken !== refreshToken) {
+        throw new Error('Invalid refresh token')
+      }
 
-    return { accessToken, refreshToken: newRefreshToken };
+      const { accessToken, refreshToken: newRefreshToken } = this.generateTokens(user._id)
+
+      user.refreshToken = newRefreshToken
+      await user.save()
+
+      return {
+        accessToken,
+        refreshToken: newRefreshToken,
+        userId: user._id,
+      }
+    } catch (error) {
+      throw new Error(`Token refresh failed: ${error.message}`)
+    }
   }
 
-  // Выход
   static async logout(userId) {
-    await User.findByIdAndUpdate(userId, { refreshToken: null });
+    try {
+      await User.findByIdAndUpdate(userId, { refreshToken: null })
+      return {
+        success: 'true',
+      }
+    } catch (error) {
+      throw new Error(`Token refresh failed: ${error.message}`)
+    }
   }
 }
 
-module.exports = AuthService;
+module.exports = AuthService

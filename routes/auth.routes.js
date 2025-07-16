@@ -1,10 +1,10 @@
-const express = require("express");
-const router = express.Router();
-const { login, refresh, logout } = require("../controllers/auth.controller");
-const authMiddleware = require("../middlewares/auth");
+const express = require('express')
+const { refresh, register, login, logout } = require('../controllers/auth.controller')
+const router = express.Router()
 
-router.post("/login", login);
-router.post("/refresh", refresh);
-router.post("/logout", authMiddleware, logout); // Требует авторизации
+router.post('/register', register)
+router.post('/login', login)
+router.post('/refresh', refresh)
+router.post('/logout', logout)
 
-module.exports = router;
+module.exports = router

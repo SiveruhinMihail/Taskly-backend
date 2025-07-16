@@ -1,21 +1,32 @@
-const express = require("express");
-const authRoutes = require("./routes/auth.routes");
-const connectDB = require("./config/db");
+require('dotenv').config()
 
-const app = express();
-const PORT = 3000;
-app.use(express.json());
+const express = require('express')
 
-// Подключение маршрутов
-app.use("/api/auth", authRoutes);
+const swaggerUi = require('swagger-ui-express')
+const swaggerSpec = require('./config/swagger')
 
-app.get("/", (req, res) => {
-  res.send("Привет, мир! �");
-});
+const connectDB = require('./config/db')
+const authRoutes = require('./routes/auth.routes')
 
-// Подключение MongoDB
-connectDB();
+const PORT = process.env.PORT
 
-app.listen(PORT, () => {
-  console.log(`Сервер запущен на http://localhost:${PORT}`);
-});
+const app = express()
+
+app.use(express.json())
+
+connectDB()
+
+app.use('/api/auth', authRoutes)
+
+app.get('/', (req, res) => {
+  res.send('Привет, мир! �')
+})
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+
+app.listen(PORT, () =>
+  console.log(`
+  Server running on port ${PORT}
+  Swagger UI: http://localhost:${PORT}/docs
+`),
+)
