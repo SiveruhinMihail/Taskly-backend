@@ -6,6 +6,12 @@
 http://localhost:3000/docs
 ```
 
+## ESLint
+
+```
+npx eslint .
+```
+
 ## Требования
 
 - Установленный Docker
@@ -28,6 +34,8 @@ cp .env.example .env
 - URL для подключения к MongoDB
 
 **Важно:** Создать mongo-init.js
+
+- Скопировать данные из тг
 
 ### 2. Запуск сервисов
 

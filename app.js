@@ -22,7 +22,6 @@ app.get('/', (req, res) => {
   res.send('Привет, мир! �')
 })
 
-
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 app.listen(PORT, () =>

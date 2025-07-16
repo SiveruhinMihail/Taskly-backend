@@ -104,9 +104,7 @@ class AuthService {
     try {
       await User.findByIdAndUpdate(userId, { refreshToken: null })
       return {
-        accessToken,
-        refreshToken: newRefreshToken,
-        userId: user._id,
+        success: 'true',
       }
     } catch (error) {
       throw new Error(`Token refresh failed: ${error.message}`)

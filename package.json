@@ -13,6 +13,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "eslint": "^9.31.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-node": "^11.1.0",

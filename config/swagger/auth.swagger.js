@@ -22,6 +22,29 @@ module.exports = {
           },
         },
         responses: {
+          200: {
+            description: 'Успешная регистрация',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    success: { type: 'boolean' },
+                    data: {
+                      type: 'object',
+                      properties: {
+                        accessToken: { type: 'string' },
+                        refreshToken: { type: 'string' },
+                        userId: { type: 'string' },
+                        name: { type: 'string' },
+                        email: { type: 'string' },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
           201: {
             description: 'Успешная регистрация',
             content: {

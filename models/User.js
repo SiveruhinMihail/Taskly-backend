@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
+const SALT_WORK_FACTOR = 10
 
 const userSchema = new mongoose.Schema(
   {
@@ -10,7 +12,11 @@ const userSchema = new mongoose.Schema(
     description: String,
     status: String,
     refreshToken: String,
-    use: { type: String, unique: true },
+    use: {
+      type: String,
+      unique: true,
+      default: () => Math.random().toString(36).substring(2),
+    },
     pinnedChats: [
       {
         type: mongoose.Schema.Types.ObjectId,
