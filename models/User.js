@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema(
     use: {
       type: String,
       unique: true,
+      require: true,
       default: () => Math.random().toString(36).substring(2),
     },
     pinnedChats: [

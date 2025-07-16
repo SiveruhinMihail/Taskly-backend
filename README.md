@@ -1,22 +1,18 @@
-# Taskly Backend - Руководство по установке с Docker
-
-## Сервер
-
-```
+# Сервер
+```bash
 http://localhost:3000/docs
 ```
+# ESLint
 
-## ESLint
-
-```
+```bash
 npx eslint .
 ```
+# Руководство по установке с Docker
 
 ## Требования
 
 - Установленный Docker
 - Установленный Docker Compose
-- Базовые знания работы с терминалом
 
 ## Быстрый старт
 
@@ -33,44 +29,57 @@ cp .env.example .env
 - Порт приложения
 - URL для подключения к MongoDB
 
-**Важно:** Создать mongo-init.js
-
-- Скопировать данные из тг
-
 ### 2. Запуск сервисов
 
+**Первый раз**
 ```bash
 docker-compose up -d --build
 ```
-
-### 3. Проверка статуса сервисов
-
+**Во время работы**
 ```bash
-docker-compose ps
+docker-compose up -d
 ```
 
-### 4. Остановка всех сервисов
+### 3. Остановка всех сервисов
 
+**Первый раз**
 ```bash
 docker-compose down -v
+```
+**Во время работы**
+```bash
+docker-compose down
 ```
 
 ## Управление сервисами
 
-### Просмотр логов
+### Проверка данных в бд
 
+#### Открыть сервис бд (данные взяты из `.env`)
 ```bash
-docker-compose logs -f
+docker exec -it mongodb mongosh -u <username> -p <password> --authenticationDatabase admin
+```
+#### Использовать бд
+```bash
+use taskly
+```
+#### посмотреть все коллекции бд
+```bash
+show collections
+```
+#### посмотреть содержимое коллекции
+```
+db.<collection>.find()
 ```
 
-### Пересборка контейнеров
+### отправка тестовых данных
 
+#### с помощью CURL
 ```bash
-docker-compose up -d --build --force-recreate
-```
-
-### Полная остановка и удаление
-
-```bash
-docker-compose down -v --rmi all
+curl -X 'POST'   'http://localhost:<POST>/api/auth/register'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
+  "name": "Иван Иванов",
+  "email": "user@example.com",
+  "password": "Password123!", 
+  "use":"123"
+}'
 ```

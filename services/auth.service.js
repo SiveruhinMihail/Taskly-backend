@@ -17,14 +17,14 @@ class AuthService {
   }
 
   // Регистрация пользователя
-  static async register(name, email, password) {
+  static async register(name, email, password, use) {
     try {
       const existingUser = await User.findOne({ email })
       if (existingUser) {
         throw new Error('User with this email already exists')
       }
 
-      const user = new User({ name, email, password })
+      const user = new User({ name, email, password, use })
       await user.save()
 
       const { accessToken, refreshToken } = this.generateTokens(user._id)
