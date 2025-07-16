@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@wesleytodd/openapi": "^1.1.0",
+    "axios": "^1.10.0",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
@@ -18,12 +19,12 @@
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.5.0",
+    "jest": "^30.0.4",
     "nodemon": "^3.1.10"
   },
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "lint:front": "eslint ./src --ext .ts,.vue --fix",
-    "lint": "npm run lint:front && npm run lint:back"
+    "test": "jest"
   }
 }
