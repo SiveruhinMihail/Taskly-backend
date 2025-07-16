@@ -34,7 +34,7 @@ exports.login = async (req, res) => {
       message: error.message,
     })
   }
-}
+} 
 
 // Обновление токенов
 exports.refresh = async (req, res) => {
