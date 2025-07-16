@@ -1,8 +1,19 @@
 # Сервер
+
+## app
 ```bash
-http://localhost:3000/docs
+http://localhost:<POST>
+```
+
+## swagger
+```bash
+http://localhost:<POST>/docs
 ```
 # ESLint
+
+```bash
+npm i --force
+```
 
 ```bash
 npx eslint .
@@ -11,8 +22,8 @@ npx eslint .
 
 ## Требования
 
-- Установленный Docker
-- Установленный Docker Compose
+- Установленный Docker Desktop
+- Открытый Docker Desktop
 
 ## Быстрый старт
 
@@ -42,13 +53,19 @@ docker-compose up -d
 
 ### 3. Остановка всех сервисов
 
-**Первый раз**
-```bash
-docker-compose down -v
-```
 **Во время работы**
 ```bash
 docker-compose down
+```
+
+**Стереть данные**
+```bash
+docker-compose down -v
+```
+
+### 4. Пересборка контейнера
+```bash
+docker-compose up -d --build --force-recreate
 ```
 
 ## Управление сервисами
@@ -76,10 +93,9 @@ db.<collection>.find()
 
 #### с помощью CURL
 ```bash
-curl -X 'POST'   'http://localhost:<POST>/api/auth/register'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
-  "name": "Иван Иванов",
-  "email": "user@example.com",
-  "password": "Password123!", 
-  "use":"123"
+curl -X "POST" "http://localhost:3000/api/auth/register" -H "accept: application/json" -H "Content-Type: application/json" -d '{
+  "name": "Weah MeahoBe",      
+  "email": "userr@example.com",
+  "password": "Password123!", "use":"1234"
 }'
 ```
