@@ -22,14 +22,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-
-      - name: Install Docker and Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io docker-compose
-          sudo systemctl start docker
-          docker --version
-          docker-compose --version
       
       - name: Create .env file
         run: |
@@ -46,12 +38,20 @@ jobs:
           JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}
           PORT=3000
           EOF
-      
-      - name: Force install dependencies
-        run: npm i --force
+
+      - name: Install Docker and Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io docker-compose
+          sudo systemctl start docker
+          docker --version
+          docker-compose --version
 
       - name: Run tests with Docker
         run: docker-compose up -d --build
+      
+      - name: Force install dependencies
+        run: npm i --force
 
       - name: Run ESLint tests
         run: npx eslint .
