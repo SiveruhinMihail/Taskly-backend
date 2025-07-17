@@ -43,7 +43,7 @@ jobs:
         run: npm i --force
 
       - name: Run tests with Docker
-        run: docker-compose up -d
+        run: docker-compose up -d --build
 
       - name: Run ESLint tests
         run: npx eslint .
