@@ -48,8 +48,12 @@ jobs:
       - name: Force install dependencies
         run: npm i --force
 
-      - name: Run tests with Docker
-        run: docker-compose up -d --build
+      - name: Run Docker Compose
+        run: |
+          docker-compose up -d --build
+          # Явно ждём готовности приложения
+          timeout 300 bash -c 'while [[ "$(docker-compose exec -T app curl -s -o /dev/null -w "%{http_code}" http://localhost:${PORT}/health)" != "200" ]]; do sleep 5; echo "Waiting for app to start..."; done' || exit 1
+          echo "All services are up and healthy"
 
       - name: Run ESLint tests
         run: npx eslint .
