@@ -41,9 +41,12 @@ jobs:
       
       - name: Force install dependencies
         run: npm i --force
-      
-      - name: Run build
-        run: npm run build --if-present
+
+      - name: Run tests with Docker
+        run: docker-compose up -d
+
+      - name: Run ESLint tests
+        run: npx eslint .
       
       - name: Run tests
         run: npm test
