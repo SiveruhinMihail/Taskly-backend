@@ -22,13 +22,6 @@ app.get('/', (req, res) => {
   res.send('Привет, мир! �')
 })
 
-app.get('/health', (req, res) => {
-  mongoose.connection.db.admin().ping((err) => {
-    if (err) return res.status(500).send('MongoDB connection failed');
-    res.status(200).send('OK');
-  });
-});
-
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 app.listen(PORT, () =>
