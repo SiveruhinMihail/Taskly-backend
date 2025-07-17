@@ -33,7 +33,7 @@ jobs:
           MONGO_PORT=${{ secrets.MONGO_PORT }}
           
           # App Configuration
-          NODE_ENV=test
+          NODE_ENV=development
           JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}
           JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}
           PORT=3000
