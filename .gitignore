@@ -13,6 +13,7 @@ dist
 dist-ssr
 *.local
 mongo-init.js
+data
 
 # Editor directories and files
 .vscode/*
