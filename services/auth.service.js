@@ -112,13 +112,13 @@ class AuthService {
   }
   static async get_user(userId) {
     try {
-      const user = await User.findOne({ _id: userId })
+      const user = await User.findById(userId)
       if (!user) {
         throw new Error('User not found')
       }
       return user
     } catch (error) {
-      throw new Error(`Login failed: ${error.message}`)
+      throw new Error(`User not found: ${error.message}`)
     }
   }
 }
