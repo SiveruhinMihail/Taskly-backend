@@ -110,6 +110,17 @@ class AuthService {
       throw new Error(`Token refresh failed: ${error.message}`)
     }
   }
+  static async get_user(userId) {
+    try {
+      const user = await User.findOne({ _id: userId })
+      if (!user) {
+        throw new Error('User not found')
+      }
+      return user
+    } catch (error) {
+      throw new Error(`Login failed: ${error.message}`)
+    }
+  }
 }
-
+//687bd03f8ceb67ac6da3ac9c
 module.exports = AuthService

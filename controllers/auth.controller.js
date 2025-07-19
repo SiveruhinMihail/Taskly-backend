@@ -62,3 +62,17 @@ exports.logout = async (req, res) => {
     res.status(500).json({ error: err.message })
   }
 }
+
+exports.get_user = async (req, res) => {
+  try {
+    const { user_id } = req.body
+    const result = await AuthService.get_user(user_id)
+
+    res.status(200).json({
+      success: true,
+      data: result,
+    })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
