@@ -7,6 +7,7 @@ const swaggerSpec = require('./config/swagger')
 
 const connectDB = require('./config/db')
 const authRoutes = require('./routes/auth.routes')
+const routeRoutes = require('./routes/route.routes')
 
 const PORT = process.env.PORT
 
