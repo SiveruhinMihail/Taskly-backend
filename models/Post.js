@@ -3,17 +3,17 @@ const mongoose = require('mongoose')
 const postSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
-    content: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Content',
-      required: true,
-    },
-    characteristics: [String],
-    author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-    },
+    // content: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'Content',
+    //   required: true,
+    // },
+    // characteristics: [String],
+    // author: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'User',
+    //   required: true,
+    // },
     likesCount: { type: Number, default: 0 },
     favoritesCount: { type: Number, default: 0 },
     complaintsCount: { type: Number, default: 0 },

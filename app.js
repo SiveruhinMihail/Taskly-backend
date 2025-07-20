@@ -19,7 +19,7 @@ connectDB()
 
 app.use('/api/auth', authRoutes)
 
-app.use('/api/route', routRoutes)
+app.use('/api/route', routeRoutes)
 
 app.get('/', (req, res) => {
   res.send('Привет, мир! �')
