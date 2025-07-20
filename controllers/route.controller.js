@@ -1,31 +1,19 @@
 const express = require('express')
 const router = express.Router()
-const Post = require('../models/Post')
-//обработка постов
+const PostService = require('./route.service')
+
+// обработка постов
 router.post('/posts', async (req, res) => {
   try {
     const { title } = req.body
+    const savedPost = await PostService.createPost(title)
 
-    if (!title || typeof title !== 'string' || title.trim() === '') {
-      return res.status(400).json({
-        success: false,
-        message: 'Title is required and must be a non-empty string',
-      })
-    }
-    //СОЗДАНИЕ НОВОГО ПОСТА
-    const newPost = new Post({
-      title: title.trim(),
-      //- МСТО ДЛЯ ДОП ПОЛЕЙ
-    })
-    //СОХРАНЕНИЕ ПОСТ В БД
-    const savedPost = await newPost.save()
-    //УСПЕШНЫЙ ОТВЕТ
+    // УСПЕШНЫЙ ОТВЕТ
     res.status(201).json({
       success: true,
       message: 'Post created successfully',
       data: savedPost,
     })
-    //ОБРАБОТКА ОШИБОК
   } catch (error) {
     console.error('Error creating post:', error)
 
@@ -34,6 +22,13 @@ router.post('/posts', async (req, res) => {
         success: false,
         message: 'Validation error',
         errors: error.errors,
+      })
+    }
+
+    if (error.message === 'Title is required and must be a non-empty string') {
+      return res.status(400).json({
+        success: false,
+        message: error.message,
       })
     }
 
