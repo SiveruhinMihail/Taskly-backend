@@ -123,10 +123,10 @@ npm test
 #### с помощью CURL
 
 ```bash
-curl -X "POST" "http://localhost:<PORT>/api/auth/register" -H "accept: application/json" -H "Content-Type: application/json" -d '{
+curl -X "POST" "http://localhost:3000/api/auth/register" -H "accept: application/json" -H "Content-Type: application/json" -d '{
   "name": "Weah MeahoBe",
-  "email": "userr@example.com",
-  "password": "Password123!", "use":"1234"
+  "email": "userrrr@example.com",
+  "password": "Password123!", "use":"123rrr4"
 }'
 ```
 

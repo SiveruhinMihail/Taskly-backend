@@ -65,8 +65,8 @@ exports.logout = async (req, res) => {
 
 exports.get_user = async (req, res) => {
   try {
-    const { userId } = req.body
-    const result = await AuthService.get_user(userId)
+    const { email: userEmail } = req.query
+    const result = await AuthService.get_user(userEmail)
 
     res.status(200).json({
       success: true,
