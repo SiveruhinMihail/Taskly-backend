@@ -1,16 +1,48 @@
-exports.create = async (req, res, next) => {
+const express = require('express')
+const router = express.Router()
+const Post = require('../models/Post')
+//обработка постов
+router.post('/posts', async (req, res) => {
   try {
-    //получение данных запросов маршрута из тела запроса(пример)
-    const { startPoint, endPoint, distance } = req.body
-    const newRoute = { startPoint, endPoint, distance, id: Date.now() } //-Должен использоваться id из БД + ЭТО ЗАГЛУШКА И НЕПОНИМАЮ ЧТО ДЕЛАТЬ
-    //успешный ответ
+    const { title } = req.body
+
+    if (!title || typeof title !== 'string' || title.trim() === '') {
+      return res.status(400).json({
+        success: false,
+        message: 'Title is required and must be a non-empty string',
+      })
+    }
+    //СОЗДАНИЕ НОВОГО ПОСТА
+    const newPost = new Post({
+      title: title.trim(),
+      //- МСТО ДЛЯ ДОП ПОЛЕЙ
+    })
+    //СОХРАНЕНИЕ ПОСТ В БД
+    const savedPost = await newPost.save()
+    //УСПЕШНЫЙ ОТВЕТ
     res.status(201).json({
       success: true,
-      data: newRoute,
+      message: 'Post created successfully',
+      data: savedPost,
     })
-    //обработка ответа
+    //ОБРАБОТКА ОШИБОК
   } catch (error) {
-    //ошибка
-    next(error)
+    console.error('Error creating post:', error)
+
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation error',
+        errors: error.errors,
+      })
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+      error: error.message,
+    })
   }
-}
+})
+
+module.exports = router
