@@ -7,8 +7,8 @@ class PostService {
     }
 
     const post = new Post({ title })
-    const savedPost = await post.save()
-    return savedPost
+    await post.save()
+    return { success: 'true' }
   }
 }
 
