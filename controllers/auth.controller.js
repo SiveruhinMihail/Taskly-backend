@@ -80,11 +80,7 @@ exports.get_user = async (req, res) => {
 
 exports.me = async (req, res) => {
   try {
-    const authHeader = req.headers.authorization
-    const accessToken = authHeader.split(' ')[1]
-
-    const decoded = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET)
-    const userData = await AuthService.me(decoded.userId)
+    const userData = await AuthService.me(req.userId)
     res.status(200).json({
       success: true,
       data: userData,
