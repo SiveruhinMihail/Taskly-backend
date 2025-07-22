@@ -76,3 +76,31 @@ exports.get_user = async (req, res) => {
     res.status(500).json({ error: err.message })
   }
 }
+
+exports.authme = async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization
+    if (!authHeader) {
+      throw new Error('Authorization header is missing')
+    }
+
+    const accessToken = authHeader.split(' ')[1]
+    if (!accessToken) {
+      throw new Error('Access token not provided')
+    }
+    const decoded = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET)
+    const userData = await AuthService.get_user(decoded.email)
+    res.status(200).json({
+      success: true,
+      data: {
+        id: userData.id,
+        email: userData.email,
+      },
+    })
+  } catch (err) {
+    res.status(401).json({
+      success: false,
+      message: err.message,
+    })
+  }
+}
