@@ -1,5 +1,4 @@
 const AuthService = require('../services/auth.service')
-const jwt = require('jsonwebtoken')
 
 // Регистрация
 exports.register = async (req, res) => {
