@@ -47,7 +47,7 @@ class AuthService {
   // Вход пользователя
   static async login(email, password) {
     try {
-      const user = await User.findOne({ email })
+      const user = await User.findOne({ email: email })
       if (!user) {
         throw new Error('User not found')
       }
@@ -60,7 +60,7 @@ class AuthService {
       const { accessToken, refreshToken } = this.generateTokens(user._id)
 
       user.refreshToken = refreshToken
-      user.lastLogin = new Date()
+      user.lastSeen = new Date()
       await user.save()
 
       return {
@@ -113,6 +113,18 @@ class AuthService {
   static async get_user(email) {
     try {
       const user = await User.findOne({ email: email })
+      if (!user) {
+        throw new Error('User not found')
+      }
+      return user
+    } catch (error) {
+      throw new Error(`User not found: ${error.message}`)
+    }
+  }
+
+  static async me(userID) {
+    try {
+      const user = await User.findById(userID).select('-password -__v -refreshToken')
       if (!user) {
         throw new Error('User not found')
       }

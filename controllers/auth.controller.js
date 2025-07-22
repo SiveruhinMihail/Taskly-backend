@@ -1,4 +1,5 @@
 const AuthService = require('../services/auth.service')
+const jwt = require('jsonwebtoken')
 
 // Регистрация
 exports.register = async (req, res) => {
@@ -77,25 +78,16 @@ exports.get_user = async (req, res) => {
   }
 }
 
-exports.authme = async (req, res) => {
+exports.me = async (req, res) => {
   try {
     const authHeader = req.headers.authorization
-    if (!authHeader) {
-      throw new Error('Authorization header is missing')
-    }
-
     const accessToken = authHeader.split(' ')[1]
-    if (!accessToken) {
-      throw new Error('Access token not provided')
-    }
+
     const decoded = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET)
-    const userData = await AuthService.get_user(decoded.email)
+    const userData = await AuthService.me(decoded.userId)
     res.status(200).json({
       success: true,
-      data: {
-        id: userData.id,
-        email: userData.email,
-      },
+      data: userData,
     })
   } catch (err) {
     res.status(401).json({
