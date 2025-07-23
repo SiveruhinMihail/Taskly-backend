@@ -1,14 +1,37 @@
 const jwt = require('jsonwebtoken')
 
 module.exports = (req, res, next) => {
-  const authHeader = req.headers.authorization
-  const accessToken = authHeader.split(' ')[1]
-
   try {
+    const authHeader = req.headers.authorization
+    if (!authHeader) {
+      return res.status(401).json({
+        data: {
+          detail: 'Требуется токен авторизации',
+          config: {
+            url: req.originalUrl,
+            method: req.method,
+            params: req.query,
+            data: req.body,
+          },
+        },
+      })
+    }
+    const accessToken = authHeader.split(' ')[1]
+
     const decoded = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET)
     req.userId = decoded.userId
-    next()
-  } catch {
-    res.status(400).json({ error: 'Invalid token' })
+    return next()
+  } catch (err) {
+    return res.status(401).json({
+      data: {
+        detail: 'Токен недействителен или просрочен',
+        config: {
+          url: req.originalUrl,
+          method: req.method,
+          params: req.query,
+          data: req.body,
+        },
+      },
+    })
   }
 }

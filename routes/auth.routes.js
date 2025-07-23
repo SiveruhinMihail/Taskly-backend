@@ -7,7 +7,7 @@ router.post('/register', register)
 router.post('/login', login)
 router.post('/refresh', refresh)
 router.post('/logout', logout)
-router.get('/get_user', get_user)
+router.get('/get_user', decodedMiddlewares, get_user)
 router.get('/me', decodedMiddlewares, me)
 
 module.exports = router
