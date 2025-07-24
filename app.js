@@ -9,12 +9,21 @@ const connectDB = require('./config/db')
 const authRoutes = require('./routes/auth.routes')
 
 const PORT = process.env.PORT
+const cors = require('cors')
 
 const app = express()
 
 app.use(express.json())
-
 connectDB()
+
+app.use(
+  cors({
+    origin: 'http://127.0.0.1:8000', // Точный адрес фронтенда
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'jwt-refresh'],
+    credentials: true,
+  }),
+)
 
 app.use('/api/auth', authRoutes)
 

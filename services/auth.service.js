@@ -16,6 +16,14 @@ class AuthService {
     return { accessToken, refreshToken }
   }
 
+  static generateAccessToken(userId) {
+    const accessToken = jwt.sign({ userId }, config.accessTokenSecret, {
+      expiresIn: config.accessTokenExpiration,
+    })
+
+    return accessToken
+  }
+
   // Регистрация пользователя
   static async register(name, email, password, use) {
     try {
@@ -85,16 +93,9 @@ class AuthService {
         throw new Error('Invalid refresh token')
       }
 
-      const { accessToken, refreshToken: newRefreshToken } = this.generateTokens(user._id)
+      const accessToken = this.generateAccessToken(user._id)
 
-      user.refreshToken = newRefreshToken
-      await user.save()
-
-      return {
-        accessToken,
-        refreshToken: newRefreshToken,
-        userId: user._id,
-      }
+      return accessToken
     } catch (error) {
       throw new Error(`Token refresh failed: ${error.message}`)
     }

@@ -36,15 +36,17 @@ exports.login = async (req, res) => {
   }
 }
 
-// Обновление токенов
+// Обновление токена
 exports.refresh = async (req, res) => {
   try {
-    const { refreshToken } = req.body
-    const result = await AuthService.refreshTokens(refreshToken)
+    const refreshToken = req.headers['jwt-refresh']
+    const accessToken = await AuthService.refreshTokens(refreshToken)
 
     res.json({
       success: true,
-      data: result,
+      data: {
+        access_token: accessToken, // Убедитесь в правильности поля
+      },
     })
   } catch (error) {
     res.status(401).json({

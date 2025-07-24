@@ -85,7 +85,7 @@ docker-compose up -d --build --force-recreate
 #### Открыть сервис бд (данные взяты из `.env`)
 
 ```bash
-docker exec -it mongodb mongosh -u <username> -p <password> --authenticationDatabase admin
+docker exec -it mongodb mongosh -u admin -p 89450 --authenticationDatabase admin
 ```
 
 #### Использовать бд

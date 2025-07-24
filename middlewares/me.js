@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken')
-const { param } = require('../routes/auth.routes')
 
 module.exports = (req, res, next) => {
   try {
@@ -12,8 +11,8 @@ module.exports = (req, res, next) => {
           config: {
             url: urlWithoutParams,
             method: req.method,
-            data: req.body,
             params: req.query,
+            data: req.body,
           },
         },
       })
@@ -21,11 +20,8 @@ module.exports = (req, res, next) => {
     const accessToken = authHeader.split(' ')[1]
 
     const decoded = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET)
-    if (decoded.userId) {
-      return next()
-    } else {
-      return res.status(401)
-    }
+    req.userId = decoded.userId
+    return next()
   } catch (err) {
     const urlWithoutParams = req.originalUrl.split('?')[0]
     return res.status(401).json({
@@ -34,8 +30,8 @@ module.exports = (req, res, next) => {
         config: {
           url: urlWithoutParams,
           method: req.method,
-          data: req.body,
           params: req.query,
+          data: req.body,
         },
       },
     })
