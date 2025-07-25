@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken')
-const { param } = require('../routes/auth.routes')
 
 module.exports = (req, res, next) => {
   try {
