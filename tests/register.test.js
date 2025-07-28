@@ -6,9 +6,8 @@ test('Register user', async () => {
     `http://localhost:3000/api/auth/register`,
     {
       name: 'Weah MeahoBe',
-      email: 'userrrrr@example.com',
+      email: 'userrrrrr@example.com',
       password: 'Password123!',
-      use: '33dasdsa33',
     },
     {
       headers: { 'Content-Type': 'application/json' },

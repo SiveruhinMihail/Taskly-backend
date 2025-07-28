@@ -3,8 +3,8 @@ const AuthService = require('../services/auth.service')
 // Регистрация
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, use } = req.body
-    const result = await AuthService.register(name, email, password, use)
+    const { name, email, password } = req.body
+    const result = await AuthService.register(name, email, password)
 
     res.status(200).json({
       success: true,

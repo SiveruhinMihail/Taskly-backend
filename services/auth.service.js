@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 const config = require('../config/jwt')
-
+const generateUse = require('../utils/generateUse')
 class AuthService {
   // Генерация токенов
   static generateTokens(userId) {
@@ -25,13 +25,13 @@ class AuthService {
   }
 
   // Регистрация пользователя
-  static async register(name, email, password, use) {
+  static async register(name, email, password) {
     try {
       const existingUser = await User.findOne({ email })
       if (existingUser) {
         throw new Error('User with this email already exists')
       }
-
+      const use = await generateUse()
       const user = new User({ name, email, password, use })
       await user.save()
 
@@ -43,15 +43,13 @@ class AuthService {
       return {
         accessToken,
         refreshToken,
-        userId: user._id,
-        name: user.name,
-        email: user.email,
       }
     } catch (error) {
       throw new Error(`Registration failed: ${error.message}`)
     }
   }
 
+  //
   // Вход пользователя
   static async login(email, password) {
     try {
@@ -74,9 +72,6 @@ class AuthService {
       return {
         accessToken,
         refreshToken,
-        userId: user._id,
-        name: user.name,
-        email: user.email,
       }
     } catch (error) {
       throw new Error(`Login failed: ${error.message}`)
