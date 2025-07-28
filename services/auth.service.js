@@ -112,7 +112,19 @@ class AuthService {
       if (!user) {
         throw new Error('User not found')
       }
-      return user
+      return {
+        email: user.email,
+        name: user.name,
+        use: user.use,
+        avatar: user.avatar,
+        gender: user.gender,
+        description: user.description,
+        status: user.status,
+        pinnedChats: user.pinnedChats,
+        subscribers: user.subscribers,
+        subscriptions: user.subscriptions,
+        lastSeen: user.lastSeen,
+      }
     } catch (error) {
       throw new Error(`User not found: ${error.message}`)
     }
@@ -124,7 +136,19 @@ class AuthService {
       if (!user) {
         throw new Error('User not found')
       }
-      return user
+      return {
+        email: user.email,
+        name: user.name,
+        use: user.use,
+        avatar: user.avatar,
+        gender: user.gender,
+        description: user.description,
+        status: user.status,
+        pinnedChats: user.pinnedChats,
+        subscribers: user.subscribers,
+        subscriptions: user.subscriptions,
+        lastSeen: user.lastSeen,
+      }
     } catch (error) {
       throw new Error(`User not found: ${error.message}`)
     }
