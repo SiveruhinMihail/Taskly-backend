@@ -16,24 +16,10 @@ const messageSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Content',
     },
-    pinned: { type: Boolean, default: false },
-    statuses: [
-      {
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
-        },
-        status: {
-          type: String,
-          enum: ['sent', 'delivered', 'read'],
-        },
-        timestamp: Date,
-      },
-    ],
-    replyTo: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Message',
-    },
+    // replyTo: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'Message',
+    // },
   },
   {
     timestamps: true,

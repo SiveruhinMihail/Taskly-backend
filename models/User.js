@@ -18,12 +18,6 @@ const userSchema = new mongoose.Schema(
       require: true,
       default: () => Math.random().toString(36).substring(2),
     },
-    pinnedChats: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Chat',
-      },
-    ],
     subscribers: [
       {
         type: mongoose.Schema.Types.ObjectId,
