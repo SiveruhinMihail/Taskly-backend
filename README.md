@@ -3,13 +3,13 @@
 ## app
 
 ```bash
-http://localhost:<POST>
+http://localhost:<PORT>
 ```
 
 ## swagger
 
 ```bash
-http://localhost:<POST>/docs
+http://localhost:<PORT>/docs
 ```
 
 # ESLint

@@ -25,7 +25,7 @@ module.exports = (req, res, next) => {
     } else {
       return res.status(401)
     }
-  } catch (err) {
+  } catch {
     const urlWithoutParams = req.originalUrl.split('?')[0]
     return res.status(401).json({
       data: {

@@ -1,5 +1,5 @@
 const axios = require('axios')
-const { test, expect } = require('@jest/globals')
+const { test } = require('@jest/globals')
 
 test('get_user', async () => {
   try {
