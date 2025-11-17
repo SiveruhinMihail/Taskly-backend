@@ -9,6 +9,6 @@ router.post('/login', login)
 router.post('/refresh', refresh)
 router.post('/logout', logout)
 router.get('/get_user', checkToken, get_user)
-router.get('/me', decodedMiddlewares, me)
+router.get('/me', decodedMiddlewares, me) 
 
 module.exports = router
