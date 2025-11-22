@@ -19,7 +19,12 @@ connectDB()
 app.use(
   cors({
     origin: [
-      'http://172.27.160.1:8000',
+      'http://localhost:3000',
+      'http://localhost:8080',
+      'http://localhost:3001',
+      'http://127.0.0.1:3000',
+      'http://frontend:3000',
+      'http://localhost',
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'jwt-refresh'],
@@ -29,8 +34,12 @@ app.use(
 
 app.use('/api/auth', authRoutes)
 
-app.get('/', (req, res) => {
-  res.send('Привет, мир! �')
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    timestamp: new Date(),
+    database: 'connected',
+  })
 })
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
