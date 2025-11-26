@@ -1,155 +1,272 @@
-# Сервер
+# 🌟 Social Network Backend API
 
-## app
+<div align="center">
+
+![Express.js](https://img.shields.io/badge/Express.js-4.x-lightgrey?style=for-the-badge&logo=express)
+![Node.js](https://img.shields.io/badge/Node.js-18+-green?style=for-the-badge&logo=node.js)
+![MongoDB](https://img.shields.io/badge/MongoDB-6.0-green?style=for-the-badge&logo=mongodb)
+![JWT](https://img.shields.io/badge/JWT-Auth-blue?style=for-the-badge&logo=jsonwebtokens)
+![Docker](https://img.shields.io/badge/Docker-Ready-blue?style=for-the-badge&logo=docker)
+
+_Мощный бэкенд для социальной сети с Express.js, аутентификацией и медиа-функционалом_
+
+</div>
+
+## 📋 Оглавление
+
+- [🚀 Быстрый старт](#-быстрый-старт)
+- [🐳 Запуск с Docker](#-запуск-с-docker)
+- [💻 Локальная разработка](#-локальная-разработка)
+- [🛠 Доступные команды](#-доступные-команды)
+- [📡 API Эндпоинты](#-api-эндпоинты)
+- [🔐 Аутентификация](#-аутентификация)
+- [🧪 Тестирование](#-тестирование)
+
+## 🚀 Быстрый старт
+
+### Предварительные требования
+
+| Инструмент  | Версия | Назначение                 |
+| ----------- | ------ | -------------------------- |
+| **Docker**  | 20.10+ | 🐳 Основной способ запуска |
+| **Node.js** | 18+    | 💻 Локальная разработка    |
+| **MongoDB** | 6.0+   | 🗄 Основная база данных    |
+
+## 🐳 Запуск с Docker
+
+### Development окружение 🛠
 
 ```bash
-http://localhost:<PORT>
+# Запуск development окружения
+npm run docker:dev
+
+# Запуск с пересборкой
+npm run docker:dev:build
+
+# Просмотр логов в реальном времени
+npm run docker:dev:logs
+
+# Остановка сервисов
+npm run docker:dev:down
+
+# Полная очистка (с удалением volumes)
+npm run docker:dev:clean
 ```
 
-## swagger
+### Production окружение 🚀
 
 ```bash
-http://localhost:<PORT>/docs
+# Запуск production окружения
+npm run docker:prod
+
+# Запуск с пересборкой
+npm run docker:prod:build
+
+# Просмотр логов
+npm run docker:prod:logs
+
+# Остановка сервисов
+npm run docker:prod:down
+
+# Полная очистка
+npm run docker:prod:clean
 ```
 
-# ESLint
+## 💻 Локальная разработка
+
+### 1. Установка зависимостей
 
 ```bash
-npm i --force
+npm install --force
 ```
 
-```bash
-npx eslint .
-```
-
-# Руководство по установке с Docker
-
-## Требования
-
-- Установленный Docker Desktop
-- Открытый Docker Desktop
-
-## Быстрый старт
-
-### 1. Инициализация окружения
+### 2. Настройка окружения
 
 ```bash
+# Копируем примеры файлов окружения
 cp .env.example .env
+cp .env.example .env.development
+cp .env.example .env.production
+
+# Редактируем файлы под ваше окружение
 ```
 
-**Важно:** После создания файла `.env` необходимо отредактировать:
-
-- Данные для подключения к MongoDB
-- Секретный ключ JWT
-- Порт приложения
-- URL для подключения к MongoDB
-
-### 2. Запуск сервисов
-
-**Первый раз**
+### 3. Запуск базы данных
 
 ```bash
-docker-compose up -d --build
+# Запуск MongoDB
+docker run -d -p 27017:27017 --name mongodb-dev mongo:6
+
+# Запуск Redis (опционально)
+docker run -d -p 6379:6379 --name redis-dev redis:7-alpine
 ```
 
-**Во время работы**
+### 4. Запуск приложения
 
 ```bash
-docker-compose up -d
-```
-
-### 3. Остановка всех сервисов
-
-**Во время работы**
-
-```bash
-docker-compose down
-```
-
-**Стереть данные**
-
-```bash
-docker-compose down -v
-```
-
-### 4. Пересборка контейнера
-
-```bash
-docker-compose up -d --build --force-recreate
-```
-
-## Управление сервисами
-
-### Проверка данных в бд
-
-#### Открыть сервис бд (данные взяты из `.env`)
-
-```bash
-docker exec -it mongodb mongosh -u admin -p 89450 --authenticationDatabase admin
-```
-
-#### Использовать бд
-
-```bash
-use taskly
-```
-
-#### посмотреть все коллекции бд
-
-```bash
-show collections
-```
-
-#### посмотреть содержимое коллекции
-
-```
-db.<collection>.find()
-```
-
-#### Удалить содержимое коллекции
-
-```
-db.<collection>.deleteMany({})
-```
-
-### отправка тестовых данных
-
-#### с помощью jest
-
-```bash
-npm test
-```
-
-#### с помощью CURL
-
-```bash
-curl -X "POST" "http://localhost:3000/api/auth/register" -H "accept: application/json" -H "Content-Type: application/json" -d '{
-  "name": "Weah MeahoBe",
-  "email": "userrrr@example.com",
-  "password": "Password123!", "use":"123rrr4"
-}'
-```
-
-# Локальный запуск серверов
-
-## Установка комонентов
-
-```bash
-npm i --force
-```
-
-## Запуск бд
-
-### создать в корне папку data/db/
-
-### зайти в mongoDB Compass
-
-### export connections в data/db/
-
-### Меняем путь в config/db на mongodb://localhost:27017?authSource=admin
-
-## Запуск проекта
-
-```bash
+# Development режим с hot-reload
 npm run dev
+
+# Production сборка
+npm run build && npm start
 ```
+
+## 🛠 Доступные команды
+
+### Docker команды 🐳
+
+| Команда                     | Назначение            |
+| --------------------------- | --------------------- |
+| `npm run docker:dev`        | Запуск dev окружения  |
+| `npm run docker:prod`       | Запуск prod окружения |
+| `npm run docker:dev:build`  | Пересборка dev        |
+| `npm run docker:prod:build` | Пересборка prod       |
+
+### Команды разработки 🔧
+
+| Команда            | Назначение             |
+| ------------------ | ---------------------- |
+| `npm run dev`      | Запуск в dev режиме    |
+| `npm run start`    | Запуск production      |
+| `npm run build`    | Сборка проекта         |
+| `npm run lint`     | Проверка кода ESLint   |
+| `npm run lint:fix` | Автоисправление ESLint |
+
+### Примеры запросов
+
+```bash
+# Регистрация пользователя
+curl -X POST "http://localhost:3001/api/auth/register" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "johndoe",
+    "email": "john@example.com",
+    "password": "SecurePass123!",
+    "firstName": "John",
+    "lastName": "Doe"
+  }'
+
+# Создание поста
+curl -X POST "http://localhost:3001/api/posts" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{
+    "content": "Это мой первый пост в социальной сети! 🎉",
+    "media": ["image1.jpg", "image2.jpg"]
+  }'
+```
+
+## 🔐 Аутентификация
+
+Система использует JWT токены для аутентификации:
+
+- **Access Token**: Короткоживущий токен (15 минут)
+- **Refresh Token**: Долгоживущий токен (30 дней)
+
+### Заголовки запросов
+
+```http
+Authorization: Bearer <access_token>
+Content-Type: application/json
+```
+
+## 🏗 Архитектура проекта
+
+```
+backend/
+├── ⚙️ config/              # Конфигурация приложения
+│   ├── swagger/           # Документация API
+│   │   ├── auth.swagger.js
+│   │   └── index.js
+│   ├── db.js              # Конфигурация базы данных
+│   └── jwt.js             # Настройки JWT
+│
+├── 🎮 controllers/         # Обработчики запросов
+│   └── auth.controller.js # Контроллер аутентификации
+│
+├── ⚙️ middlewares/         # Промежуточное ПО
+│   ├── auth.js            # Проверка аутентификации
+│   └── me.js              # Получение текущего пользователя
+│
+├── 🗃 models/              # Модели данных MongoDB
+│   ├── User.js            # Пользователи
+│   ├── Post.js            # Посты
+│   ├── Content.js         # Контент
+│   ├── Chat.js            # Чаты
+│   ├── Message.js         # Сообщения
+│   ├── Comment.js         # Комментарии
+│   ├── Like.js            # Лайки
+│   └── Favorite.js        # Избранное
+│
+├── 🛣 routes/              # Маршруты API
+│   └── auth.routes.js     # Маршруты аутентификации
+│
+├── 🛠 services/            # Бизнес-логика
+│   └── auth.service.js    # Сервис аутентификации
+│
+├── 🧪 tests/               # Тесты
+│   ├── authHelper.js      # Хелперы для тестов
+│   ├── get_user.test.js   # Тесты получения пользователя
+│   ├── login.test.js      # Тесты входа
+│   ├── me.test.js         # Тесты текущего пользователя
+│   ├── register.test.js   # Тесты регистрации
+│   └── utils/
+│       └── generateUser.js # Генерация тестовых пользователей
+│
+├── 🔧 utils/               # Вспомогательные функции
+├── ⚡ .github/
+│   └── workflows/
+│       └── node.js.yml    # CI/CD пайплайн
+│
+├── 🐳 docker-compose.yml   # Docker конфигурация
+├── 📝 package.json         # Зависимости и скрипты
+└── 🚀 app.js               # Точка входа приложения
+```
+
+## 🔧 Конфигурация
+
+### Основные переменные окружения
+
+```env
+# Сервер
+NODE_ENV=development
+PORT=3001
+HOST=0.0.0.0
+
+# База данных
+MONGODB_URI=mongodb://localhost:27017/social_network
+DB_NAME=social_network
+
+# JWT
+JWT_ACCESS_SECRET=your_access_secret_key
+JWT_REFRESH_SECRET=your_refresh_secret_key
+JWT_ACCESS_EXPIRES=15m
+JWT_REFRESH_EXPIRES=7d
+
+# Файловый сервис
+FILE_SERVICE_URL=http://localhost:8080
+UPLOAD_LIMIT=10mb
+
+# CORS
+CLIENT_URL=http://localhost:3000
+```
+
+## 🧪 Тестирование
+
+```bash
+# Запуск unit тестов
+npm run test
+
+```
+
+## 📊 Мониторинг
+
+---
+
+<div align="center">
+
+**⭐ Не забудьте поставить звездочку репозиторию!**
+
+**🐛 Нашли баг? [Создайте issue](issues)**
+
+</div>

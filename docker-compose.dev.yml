@@ -1,0 +1,25 @@
+services:
+  backend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: backend-dev
+    ports:
+      - '3001:3001'
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - DEBUG=* # ← Добавляем дебаг логи
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    working_dir: /usr/src/app
+    command: npm run dev
+    stdin_open: true
+    tty: true
+    logging: # ← Настройки логов
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '3'

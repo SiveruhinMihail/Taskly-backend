@@ -1,41 +1,35 @@
-services:
-  mongodb:
-    image: mongo:6
-    container_name: mongodb
-    restart: always
-    ports:
-      - '${MONGO_PORT}:27017'
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
-    volumes:
-      - mongodb_data:/data/db
-    healthcheck:
-      test: |
-        mongosh --quiet -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --eval "db.adminCommand('ping')"
-      interval: 5s
-      timeout: 10s
-      retries: 10
+version: '3.8'
 
-  app:
-    build: .
-    container_name: app
-    depends_on:
-      mongodb:
-        condition: service_healthy
+services:
+  backend-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: backend-prod
     ports:
-      - '${PORT}:${PORT}'
+      - '3001:3001'
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
     env_file:
-      - .env
+      - .env.production
     volumes:
-      - .:/usr/src/app
       - /usr/src/app/node_modules
-    healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:3000/health']
-      interval: 5s
-      timeout: 5s
-      retries: 5
+    restart: unless-stopped
+
+  mongodb-prod:
+    image: mongo:6
+    container_name: mongodb-prod
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: 89450
+      MONGO_INITDB_DATABASE: taskly
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_prod_data:/data/db
+    restart: unless-stopped
 
 volumes:
-  mongodb_data:
+  mongodb_prod_data:
